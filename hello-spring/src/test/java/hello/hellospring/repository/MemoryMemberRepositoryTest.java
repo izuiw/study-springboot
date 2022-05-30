@@ -59,7 +59,7 @@ public class MemoryMemberRepositoryTest {
         membertwo.setName("izuiw2");
         repository.save(membertwo);
 
-        List<Member> result = repository.findByAll();
+        List<Member> result = repository.findAll();
 
         Assertions.assertThat(result.size()).isEqualTo(2);
 
