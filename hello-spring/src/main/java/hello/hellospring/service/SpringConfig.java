@@ -1,0 +1,43 @@
+package hello.hellospring.service;
+
+import hello.hellospring.domain.Member;
+import hello.hellospring.repository.JdbcMemberRepository;
+import hello.hellospring.repository.JdbcTemplateMemberRepository;
+import hello.hellospring.repository.MemberRepository;
+import hello.hellospring.repository.MemoryMemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import javax.sql.DataSource;
+
+@Configuration
+public class SpringConfig {
+    /*
+        자바코드로 빈 설정하는 것의 장단점
+           -현 예제에서는 아직 db가 정해지지 않는 것을 가정하고
+           MemoryRepository를 변경 할 것.
+           -이 때, 직접 빈 설정을 하면, config 파일 이외에는 건드리지 않아도 되는 장점이 있음
+
+     */
+
+    private DataSource dataSource;
+
+    @Autowired
+    public SpringConfig(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    @Bean
+    public MemberService memberService(){
+        return new MemberService(memberRepository());
+    }
+
+    @Bean
+    public MemberRepository memberRepository(){
+        //return new MemoryMemberRepository();
+        // return new JdbcMemberRepository(dataSource);
+        return new JdbcTemplateMemberRepository(dataSource);
+    }
+
+}
